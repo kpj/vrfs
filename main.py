@@ -1,6 +1,7 @@
 import os
 import sys
 import mimetypes
+import threading
 
 from direct.showbase.ShowBase import ShowBase
 from direct.task import Task
@@ -17,8 +18,9 @@ class MyApp(ShowBase):
         self.setup_camera()
         self.setup_controls()
 
-        self.load_directory(path)
-        # import IPython; IPython.embed()
+        t = threading.Thread(
+            target=self.load_directory, args=(path,))
+        t.start()
 
     def setup_camera(self):
         self.disableMouse()
