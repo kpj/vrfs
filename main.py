@@ -5,7 +5,7 @@ import mimetypes
 from direct.showbase.ShowBase import ShowBase
 from direct.task import Task
 from direct.gui.OnscreenImage import OnscreenImage
-from panda3d.core import WindowProperties
+from panda3d.core import WindowProperties, TextNode
 
 
 class MyApp(ShowBase):
@@ -74,11 +74,30 @@ class MyApp(ShowBase):
             type_, subtype = general_type.split('/')
 
             if type_ == 'image':
-                OnscreenImage(
+                image = OnscreenImage(
                     image=entry.path, pos=(x, 0, y),
                     parent=self.render)
+                image.setTwoSided(True)
             elif type_ == 'text':
-                pass  # TODO
+                text = TextNode('text')
+
+                text.setWordwrap(5.0)
+                text.setTextColor(0, 0, 0, 1)
+
+                text.setFrameColor(0, 1, 1, 1)
+                text.setFrameAsMargin(0.2, 0.2, 0.1, 0.1)
+
+                text.setCardColor(1, 1, 0.5, 1)
+                text.setCardAsMargin(0, 0, 0, 0)
+                text.setCardDecal(True)
+
+                textNodePath = self.render.attachNewNode(text)
+                textNodePath.setTwoSided(True)
+                textNodePath.setScale(0.2)
+                textNodePath.setPos(x, 0, y)
+
+                with open(entry.path) as fd:
+                    text.setText(fd.read())
 
             x += 3
             if x > 6:
