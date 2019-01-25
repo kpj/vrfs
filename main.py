@@ -81,20 +81,21 @@ class MyApp(ShowBase):
             elif type_ == 'text':
                 text = TextNode('text')
 
-                text.setWordwrap(5.0)
+                text.setWordwrap(20.0)
                 text.setTextColor(0, 0, 0, 1)
 
-                text.setFrameColor(0, 1, 1, 1)
+                text.setFrameColor(.8, .8, .8, 1)
                 text.setFrameAsMargin(0.2, 0.2, 0.1, 0.1)
+                text.setFrameLineWidth(3)
 
-                text.setCardColor(1, 1, 0.5, 1)
+                text.setCardColor(1, 1, 1, 1)
                 text.setCardAsMargin(0, 0, 0, 0)
                 text.setCardDecal(True)
 
                 textNodePath = self.render.attachNewNode(text)
                 textNodePath.setTwoSided(True)
-                textNodePath.setScale(0.2)
-                textNodePath.setPos(x, 0, y)
+                textNodePath.setScale(0.1)
+                textNodePath.setPos(x-1, 0, y+1)
 
                 with open(entry.path) as fd:
                     text.setText(fd.read())
