@@ -1,3 +1,4 @@
+import os
 from abc import ABC, abstractmethod
 
 from panda3d.core import TextNode
@@ -33,6 +34,20 @@ class ErrorEntity(BaseEntity):
         textNodePath = self.render.attachNewNode(error)
         textNodePath.setTwoSided(True)
         textNodePath.setScale(0.5)
+        textNodePath.setPos(self.pos[0], self.pos[1], self.pos[2])
+
+
+class DiretoryEntity(BaseEntity):
+    def build(self):
+        folder = TextNode('Directory')
+
+        base = os.path.basename(self.fname) or os.path.basename(self.fname[:-1])
+        folder.setText(f'folder:\n"{base}"')
+        folder.setTextColor(1, 1, 1, 1)
+
+        textNodePath = self.render.attachNewNode(folder)
+        textNodePath.setTwoSided(True)
+        textNodePath.setScale(0.2)
         textNodePath.setPos(self.pos[0], self.pos[1], self.pos[2])
 
 

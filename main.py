@@ -9,6 +9,7 @@ from panda3d.core import WindowProperties
 
 from entities import (
     ErrorEntity,
+    DiretoryEntity,
     ImageEntity,
     TextEntity
 )
@@ -76,10 +77,12 @@ class MyApp(ShowBase):
 
         for entry in os.scandir(path):
             if entry.is_dir():
+                DiretoryEntity(entry.path, self.render, (x, 0, y)).build()
                 continue
 
             general_type, _ = mimetypes.guess_type(entry.path)
             if general_type is None:
+                ErrorEntity(entry.path, self.render, (x, 0, y)).build()
                 continue
 
             type_, subtype = general_type.split('/')
