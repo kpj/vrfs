@@ -100,7 +100,7 @@ class MyApp(ShowBase):
                 textNodePath.setPos(x-1, 0, y+1)
 
                 with open(entry.path) as fd:
-                    text.setText(fd.read())
+                    text.setText(fd.read(400))
 
             x += 3
             if x > 6:
