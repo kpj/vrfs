@@ -15,5 +15,6 @@ $ python main.py <path to directory>
 
 ### Controls
 
-Move your mouse to look around.
-To move in the world use: `[w]/[a]/[s]/[d]/[space]/[shift]`.
+* Move your mouse to look around.
+* To move in the world use `[w]/[a]/[s]/[d]/[space]/[shift]`.
+* To close the window press `[escape]`.
