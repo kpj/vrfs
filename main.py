@@ -3,6 +3,8 @@ import sys
 import mimetypes
 import threading
 
+import numpy as np
+
 from direct.showbase.ShowBase import ShowBase
 from direct.task import Task
 from panda3d.core import WindowProperties
@@ -74,8 +76,16 @@ class MyApp(ShowBase):
     def load_directory(self, path):
         x = 0
         y = 0
+        step = 3
 
-        for entry in os.scandir(path):
+        filenum = len(os.listdir(path))
+        sidelen = int(np.ceil(np.sqrt(filenum)))
+        idx_list = list(np.ndindex((sidelen, sidelen)))
+        assert len(idx_list) >= filenum, f'{filenum} < {len(idx_list)}'
+
+        for (i, j), entry in zip(idx_list, os.scandir(path)):
+            x, y = i*step, j*step
+
             if entry.is_dir():
                 DiretoryEntity(entry.path, self.render, (x, 0, y)).build()
                 continue
@@ -96,11 +106,6 @@ class MyApp(ShowBase):
                 Entity(entry.path, self.render, (x, 0, y)).build()
             except:
                 ErrorEntity(entry.path, self.render, (x, 0, y)).build()
-
-            x += 3
-            if x > 6:
-                x = 0
-                y += 3
 
     def controlCameraTask(self, task):
         md = self.win.getPointer(0)
