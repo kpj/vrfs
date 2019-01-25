@@ -88,7 +88,11 @@ class MyApp(ShowBase):
                 'image': ImageEntity,
                 'text': TextEntity
             }.get(type_, ErrorEntity)
-            Entity(entry.path, self.render, (x, 0, y)).build()
+
+            try:
+                Entity(entry.path, self.render, (x, 0, y)).build()
+            except:
+                ErrorEntity(entry.path, self.render, (x, 0, y)).build()
 
             x += 3
             if x > 6:
