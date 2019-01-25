@@ -79,5 +79,9 @@ class TextEntity(BaseEntity):
         textNodePath.setScale(0.1)
         textNodePath.setPos(self.pos[0]-1, self.pos[1], self.pos[2]+1)
 
-        with open(self.fname) as fd:
-            text.setText(fd.read(400))
+        try:
+            with open(self.fname) as fd:
+                text.setText(fd.read(400))
+        except UnicodeDecodeError:
+            with open(self.fname, 'rb') as fd:
+                text.setText(str(fd.read(400)))
