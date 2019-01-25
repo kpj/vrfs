@@ -5,8 +5,13 @@ import threading
 
 from direct.showbase.ShowBase import ShowBase
 from direct.task import Task
-from direct.gui.OnscreenImage import OnscreenImage
-from panda3d.core import WindowProperties, TextNode
+from panda3d.core import WindowProperties
+
+from entities import (
+    ErrorEntity,
+    ImageEntity,
+    TextEntity
+)
 
 
 class MyApp(ShowBase):
@@ -70,37 +75,20 @@ class MyApp(ShowBase):
         y = 0
 
         for entry in os.scandir(path):
+            if entry.is_dir():
+                continue
+
             general_type, _ = mimetypes.guess_type(entry.path)
             if general_type is None:
                 continue
+
             type_, subtype = general_type.split('/')
 
-            if type_ == 'image':
-                image = OnscreenImage(
-                    image=entry.path, pos=(x, 0, y),
-                    parent=self.render)
-                image.setTwoSided(True)
-            elif type_ == 'text':
-                text = TextNode('text')
-
-                text.setWordwrap(20.0)
-                text.setTextColor(0, 0, 0, 1)
-
-                text.setFrameColor(.8, .8, .8, 1)
-                text.setFrameAsMargin(0.2, 0.2, 0.1, 0.1)
-                text.setFrameLineWidth(3)
-
-                text.setCardColor(1, 1, 1, 1)
-                text.setCardAsMargin(0, 0, 0, 0)
-                text.setCardDecal(True)
-
-                textNodePath = self.render.attachNewNode(text)
-                textNodePath.setTwoSided(True)
-                textNodePath.setScale(0.1)
-                textNodePath.setPos(x-1, 0, y+1)
-
-                with open(entry.path) as fd:
-                    text.setText(fd.read(400))
+            Entity = {
+                'image': ImageEntity,
+                'text': TextEntity
+            }.get(type_, ErrorEntity)
+            Entity(entry.path, self.render, (x, 0, y)).build()
 
             x += 3
             if x > 6:
