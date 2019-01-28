@@ -21,7 +21,8 @@ from entities import (
     ErrorEntity,
     DirectoryEntity,
     ImageEntity,
-    TextEntity
+    TextEntity,
+    PdfEntity
 )
 
 
@@ -183,7 +184,11 @@ class MyApp(ShowBase):
             Entity = {
                 'image': ImageEntity,
                 'text': TextEntity
-            }.get(type_, ErrorEntity)
+            }.get(type_, None)
+            if Entity is None:
+                Entity = {
+                    'pdf': PdfEntity
+                }.get(subtype, ErrorEntity)
 
             e = Entity(self, dummy, entry.path, pos)
             e.build()

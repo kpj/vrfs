@@ -1,6 +1,9 @@
 import os
+import tempfile
 import threading
 from abc import ABC, abstractmethod
+
+from pdf2image import convert_from_path
 
 from panda3d.core import TextNode, CollisionBox, CollisionNode
 from direct.gui.OnscreenImage import OnscreenImage
@@ -112,3 +115,19 @@ class TextEntity(BaseEntity):
         except UnicodeDecodeError:
             with open(self.fname, 'rb') as fd:
                 text.setText(str(fd.read(400)))
+
+class PdfEntity(BaseEntity):
+    def assemble(self):
+        # convert first page of pdf to png
+        pages = convert_from_path(
+            self.fname, 100,
+            first_page=1, last_page=1)
+
+        tfile = tempfile.NamedTemporaryFile()
+        pages[0].save(tfile.name, 'PNG')
+
+        # display png
+        image = OnscreenImage(
+            image=tfile.name, pos=self.pos,
+            parent=self.ref_node)
+        image.setTwoSided(True)
