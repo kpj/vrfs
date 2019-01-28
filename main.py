@@ -188,10 +188,14 @@ class MyApp(ShowBase):
             if Entity is None:
                 Entity = {
                     'pdf': PdfEntity
-                }.get(subtype, ErrorEntity)
-
-            e = Entity(self, dummy, entry.path, pos)
-            e.build()
+                }.get(subtype, None)
+            if Entity is None:
+                try:
+                    TextEntity(self, dummy, entry.path, pos).build()
+                except:
+                    ErrorEntity(self, dummy, entry.path, pos).build()
+            else:
+                Entity(self, dummy, entry.path, pos).build()
 
         # self.render.ls()
         self.scene_node = dummy

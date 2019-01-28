@@ -114,7 +114,7 @@ class TextEntity(BaseEntity):
                 text.setText(fd.read(400))
         except UnicodeDecodeError:
             with open(self.fname, 'rb') as fd:
-                text.setText(str(fd.read(400)))
+                text.setText(str(fd.read(250)).replace(' ', ''))
 
 class PdfEntity(BaseEntity):
     def assemble(self):
