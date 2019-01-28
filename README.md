@@ -15,6 +15,7 @@ $ python main.py <path to directory>
 
 ### Controls
 
-* Move your mouse to look around.
+* Move your mouse to look around. Click elements to interact with them.
 * To move in the world use `[w]/[a]/[s]/[d]/[space]/[shift]`.
 * To close the window press `[escape]`.
+* Press `[b]` to go back in your directory traversal history.
