@@ -67,8 +67,8 @@ class DirectoryEntity(BaseEntity):
 
         textNodePath = self.ref_node.attachNewNode(folder)
         textNodePath.setTwoSided(True)
-        textNodePath.setScale(0.2)
-        textNodePath.setPos(self.pos[0], self.pos[1], self.pos[2])
+        textNodePath.setScale(.5)
+        textNodePath.setPos(self.pos[0]-1, self.pos[1], self.pos[2])
 
     def on_click(self):
         print(f'Traversing into: "{self.fname}"')
