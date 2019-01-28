@@ -19,3 +19,4 @@ $ python main.py <path to directory>
 * To move in the world use `[w]/[a]/[s]/[d]/[space]/[shift]`.
 * To close the window press `[escape]`.
 * Press `[b]` to go back in your directory traversal history.
+* Change your movement speed with `[n]/[m]`.

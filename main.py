@@ -28,7 +28,10 @@ from entities import (
 class MyApp(ShowBase):
     def __init__(self, path):
         ShowBase.__init__(self)
-        self.verbose = True
+        self.verbose = False
+
+        self.speed = 20
+        self.mouse_sensitivity = .1
 
         self.setFrameRateMeter(True)
         #self.render.setAntialias(AntialiasAttrib.MAuto)
@@ -98,6 +101,8 @@ class MyApp(ShowBase):
         self.accept('shift-up', self.handle_key, ['down', False])
 
         self.accept('b', self.traverse_history)
+        self.accept('m', self.change_speed, [10])
+        self.accept('n', self.change_speed, [-10])
 
         self.key_map = {
             'forward': False, 'backward': False,
@@ -107,6 +112,10 @@ class MyApp(ShowBase):
 
         # mouse
         self.accept('mouse1', self.handle_mouse)
+
+    def change_speed(self, delta):
+        self.speed += delta
+        print(f'New speed: {self.speed}')
 
     def traverse_history(self):
         if len(self.scene_node_history) > 0:
@@ -187,24 +196,22 @@ class MyApp(ShowBase):
         x = md.getX()
         y = md.getY()
 
-        sens = .1
-        self.camera.setH(x*sens)
-        self.camera.setP(y*sens)
+        self.camera.setH(x*self.mouse_sensitivity)
+        self.camera.setP(y*self.mouse_sensitivity)
 
-        speed = 10
         dt = globalClock.getDt()  # is magically available from panda3d
         if self.key_map['forward']:
-            self.camera.setPos(self.camera, 0, speed*dt, 0)
+            self.camera.setPos(self.camera, 0, self.speed*dt, 0)
         if self.key_map['backward']:
-            self.camera.setPos(self.camera, 0, -speed*dt, 0)
+            self.camera.setPos(self.camera, 0, -self.speed*dt, 0)
         if self.key_map['left']:
-            self.camera.setPos(self.camera, -speed*dt/2, 0, 0)
+            self.camera.setPos(self.camera, -self.speed*dt/2, 0, 0)
         if self.key_map['right']:
-            self.camera.setPos(self.camera, speed*dt/2, 0, 0)
+            self.camera.setPos(self.camera, self.speed*dt/2, 0, 0)
         if self.key_map['up']:
-            self.camera.setPos(self.camera, 0, 0, speed*dt/2)
+            self.camera.setPos(self.camera, 0, 0, self.speed*dt/2)
         if self.key_map['down']:
-            self.camera.setPos(self.camera, 0, 0, -speed*dt/2)
+            self.camera.setPos(self.camera, 0, 0, -self.speed*dt/2)
 
         if self.verbose:
             self.coll_traverser.traverse(self.render)
