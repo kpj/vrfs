@@ -191,8 +191,8 @@ class MyApp(ShowBase):
         self.camera.setH(x*sens)
         self.camera.setP(y*sens)
 
-        speed = .5
-        dt = 1  # self.globalClock.getDt()
+        speed = 10
+        dt = globalClock.getDt()  # is magically available from panda3d
         if self.key_map['forward']:
             self.camera.setPos(self.camera, 0, speed*dt, 0)
         if self.key_map['backward']:
